@@ -48,13 +48,27 @@ class UsersRepository {
         await this.writeAll(filteredRecords);
     }
 
+    async update(id, attrs) {
+        const records = await this.getAll();
+        const record = records.find(record => record.id === id);
+
+        if (!record) {
+            throw new Error(`Record with id ${id}, not found`)
+        }
+        // add the new attrs(new mail, pass, or..) to the existing record we found by id
+        Object.assign(record, attrs);
+        await this.writeAll(records);
+    }
+
 }
 
 const test = async () => {
     const repo = new UsersRepository('users.json');
 
+    ///update user
+    await repo.update("329ed598", { name: "igor" });
     /// delete(filter) by id
-    await repo.delete('983ae18c');
+    // await repo.delete('983ae18c');
 
     /// getOne by id
     // const user = await repo.getOne("05a81524");
