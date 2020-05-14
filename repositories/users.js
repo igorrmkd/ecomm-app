@@ -80,12 +80,14 @@ class UsersRepository {
 
 }
 
-const test = async () => {
-    const repo = new UsersRepository('users.json');
+module.exports = new UsersRepository('users.json');
+
+// const test = async () => {
+//     const repo = new UsersRepository('users.json');
 
     /// getOneBy / search -> filter by.. search by..
-    const user = await repo.getOneBy({ name: "igor", id: "329ed598" });
-    console.log(user);
+    // const user = await repo.getOneBy({ name: "igor", id: "329ed598" });
+    // console.log(user);
 
     ///update user
     // await repo.update("329ed598", { name: "igor" });
@@ -101,6 +103,6 @@ const test = async () => {
     // const users = await repo.getAll();
     // console.log(user);
 
-};
+// };
 
-test();
+// test();
