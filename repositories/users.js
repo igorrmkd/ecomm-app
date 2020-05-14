@@ -8,7 +8,7 @@ class UsersRepository {
 
         this.filename = filename;
         try {
-            false.accessSync(this.filename);
+            fs.accessSync(this.filename);
         } catch (err) {
             fs.writeFileSync(this.filename, '[]');
         }
@@ -22,9 +22,13 @@ class UsersRepository {
         const records = await this.getAll();
         // push the new data back to records
         records.push(attrs);
-        // write the updated 'records' array, back to this.filename (users.json)
-        await fs.promises.writeFile(this.filename, JSON.stringify(records))
 
+        await this.writeAll(records);
+    }
+
+    async writeAll(records) {
+        // write the updated 'records' array, back to this.filename (users.json)
+        await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
     }
 
 }
