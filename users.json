@@ -1,0 +1,32 @@
+[
+  {
+    "email": "somemail@mail.com",
+    "password": "somepassword",
+    "id": "b33df635"
+  },
+  {
+    "email": "somemail2@mail.com",
+    "password": "somepassword2",
+    "id": "bf9443e1"
+  },
+  {
+    "email": "somemail3@mail.com",
+    "password": "somepassword3",
+    "id": "6dc8e27f"
+  },
+  {
+    "email": "somemail4@mail.com",
+    "password": "somepassword4",
+    "id": "fc08851c"
+  },
+  {
+    "email": "somemail5@mail.com",
+    "password": "somepassword5",
+    "id": "77a4ad9f"
+  },
+  {
+    "email": "igor@majmunce.com",
+    "password": "bateebate",
+    "id": "c6d032bb"
+  }
+]

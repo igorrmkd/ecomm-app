@@ -26,6 +26,8 @@ class UsersRepository {
         records.push(attrs);
 
         await this.writeAll(records);
+
+        return attrs; // get an object includingthe id for the user we made
     }
 
     async writeAll(records) {
@@ -85,24 +87,27 @@ module.exports = new UsersRepository('users.json');
 // const test = async () => {
 //     const repo = new UsersRepository('users.json');
 
-    /// getOneBy / search -> filter by.. search by..
-    // const user = await repo.getOneBy({ name: "igor", id: "329ed598" });
-    // console.log(user);
+/// getOneBy / search -> filter by.. search by..
+// const user = await repo.getOneBy({ name: "igor", id: "329ed598" });
+// console.log(user);
 
-    ///update user
-    // await repo.update("329ed598", { name: "igor" });
+///update user
+// await repo.update("329ed598", { name: "igor" });
 
-    /// delete(filter) by id
-    // await repo.delete('983ae18c');
+/// delete(filter) by id
+// await repo.delete('983ae18c');
 
-    /// getOne by id
-    // const user = await repo.getOne("05a81524");
+/// getOne by id
+// const user = await repo.getOne("05a81524");
 
-    //// create
-    // await repo.create({ email: 'somemail@mail.com', password: 'somepassword' });
-    // const users = await repo.getAll();
-    // console.log(user);
+//// create
+// await repo.create({ email: 'somemail4@mail.com', password: 'somepassword4' });
+// const users = await repo.getAll();
+// console.log(user);
 
 // };
 
 // test();
+
+
+
