@@ -66,7 +66,23 @@ app.get("/signin", (req, res) => {
     `);
 });
 
+// compare the login data with the saved users data 
+app.post('/signin', async (req, res) => {
+    const { email, password } = req.body;
 
+    const user = await usersRepo.getOneBy({ email });
+
+    if (!user) {
+        return res.send("Email not found");
+    }
+
+    if (user.password !== password) {
+        return res.send("Wrong Password!")
+    }
+
+    req.session.userId = user.id;
+    res.send("You are signed In");
+});
 
 app.listen(3000, () => {
     console.log('Listening!!');
