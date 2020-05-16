@@ -10,7 +10,7 @@ app.use(cookieSession({
     keys: ['sdfsaaffsf32d1f5h32ds54']
 }));
 
-app.get('/', (req, res) => {
+app.get('/signup', (req, res) => {
     res.send(`
         <div>
         Your ID is: ${req.session.userId}
@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 
 
 // first run the bodyParser(middleware) - function, and then the callback
-app.post('/', async (req, res) => {
+app.post('/signup', async (req, res) => {
     // console.log(req.body); // req.body = the names of the inputs
     const { email, password, passwordConfirmation } = req.body;
 
@@ -48,6 +48,25 @@ app.post('/', async (req, res) => {
 
     res.send('Account created!!!');
 });
+
+app.get('/signout', (req, res) => {
+    req.session = null;
+    res.send("You are logged out");
+});
+
+app.get("/signin", (req, res) => {
+    res.send(`
+        <div>
+        <form method="Post">
+                <input name="email" placeholder="email" /><br>
+                <input name="password" placeholder="password" /><br>
+                <button>Sign In</button>
+            </form>
+        </div>    
+    `);
+});
+
+
 
 app.listen(3000, () => {
     console.log('Listening!!');
