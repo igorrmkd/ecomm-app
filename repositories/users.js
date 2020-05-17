@@ -1,5 +1,9 @@
 const fs = require('fs');
 const crypto = require('crypto');
+const util = require('util');
+
+// promisify - return a version of the function that returns a prommise
+const scrypt = util.promisify(crypto.scrypt);
 
 class UsersRepository {
     constructor(filename) {
@@ -19,15 +23,26 @@ class UsersRepository {
     }
 
     async create(attrs) {
+        // attrs === {email: "", password: ""};
         attrs.id = this.randomId();
         //get the current existing data{email: 'dsdass@dsfds.com', password: 'sdfds5435f'}
+
+        // generate salt
+        const salt = crypto.randomBytes(8).toString('hex');
+        // return a hashed(buf) combination of pass and salt
+        const buf = await scrypt(attrs.password, salt, 64);
+
         const records = await this.getAll();
         // push the new data back to records
-        records.push(attrs);
+        const record = { // replace the pass with the hashed one
+            ...attrs,
+            password: `${buf.toString('hex')}.${salt}`
+        }
+        records.push(record); // push the attributes.. with a hashed password
 
         await this.writeAll(records);
 
-        return attrs; // get an object includingthe id for the user we made
+        return record; // get an object including the id for the user we made
     }
 
     async writeAll(records) {
