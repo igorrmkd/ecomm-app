@@ -1,6 +1,12 @@
+const express = require('express');
+const usersRepo = require('../../repositories/users');
+
+//subrouter to link our route handlers to index.js
+// the router const, its an object to track all of our (app.get/post routes)
+const router = express.Router();
 
 
-app.get('/signup', (req, res) => {
+router.get('/signup', (req, res) => {
     res.send(`
         <div>
         Your ID is: ${req.session.userId}
@@ -16,7 +22,7 @@ app.get('/signup', (req, res) => {
 
 
 // first run the bodyParser(middleware) - function, and then the callback
-app.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
     // console.log(req.body); // req.body = the names of the inputs
     const { email, password, passwordConfirmation } = req.body;
 
@@ -39,12 +45,12 @@ app.post('/signup', async (req, res) => {
     res.send('Account created!!!');
 });
 
-app.get('/signout', (req, res) => {
+router.get('/signout', (req, res) => {
     req.session = null;
     res.send("You are logged out");
 });
 
-app.get("/signin", (req, res) => {
+router.get("/signin", (req, res) => {
     res.send(`
         <div>
         <form method="Post">
@@ -57,7 +63,7 @@ app.get("/signin", (req, res) => {
 });
 
 // compare the login data with the saved users data 
-app.post('/signin', async (req, res) => {
+router.post('/signin', async (req, res) => {
     const { email, password } = req.body;
 
     const user = await usersRepo.getOneBy({ email });
@@ -78,3 +84,6 @@ app.post('/signin', async (req, res) => {
     req.session.userId = user.id;
     res.send("You are signed In");
 });
+
+
+module.exports = router;
