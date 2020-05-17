@@ -45,6 +45,20 @@ class UsersRepository {
         return record; // get an object including the id for the user we made
     }
 
+    async comparePasswords(saved, supplied) {
+        /// saved -> password saved in our database, "hashed.salt"
+        /// supplied -> password given to us by the user trying to sign in
+        // const result = saved.split('.');
+        // const hashed = result[0];
+        // const salt = result[1];
+
+        const [hashed, salt] = saved.split('.'); // destructure..
+        // combine supplied and salt, and hash them
+        const hashedSuppliedBuf = await scrypt(supplied, salt, 64);
+        // compare and return true or false
+        return hashed === hashedSuppliedBuf.toString('hex');
+    }
+
     async writeAll(records) {
         // write the updated 'records' array, back to this.filename (users.json)
         await fs.promises.writeFile(this.filename, JSON.stringify(records, null, 2));
