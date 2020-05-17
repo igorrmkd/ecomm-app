@@ -1,5 +1,6 @@
 const express = require('express');
 const usersRepo = require('../../repositories/users');
+const signupTemplate = require("../../views/admin/auth/signup");
 
 //subrouter to link our route handlers to index.js
 // the router const, its an object to track all of our (app.get/post routes)
@@ -7,17 +8,7 @@ const router = express.Router();
 
 
 router.get('/signup', (req, res) => {
-    res.send(`
-        <div>
-        Your ID is: ${req.session.userId}
-        <form method="Post">
-                <input name="email" placeholder="email" /><br>
-                <input name="password" placeholder="password" /><br>
-                <input name="passwordConfirmation" placeholder="password confirmation" /><br>
-                <button>Sign Up</button>
-            </form>
-        </div>
-    `);
+    res.send(signupTemplate({ req }));
 });
 
 
