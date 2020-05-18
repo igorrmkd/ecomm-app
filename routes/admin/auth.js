@@ -27,19 +27,19 @@ router.post('/signup',
             }),
         check('password').trim().isLength({ min: 4, max: 20 }),
         check('passwordConfirmation').trim().isLength({ min: 4, max: 20 })
+            .custom((passwordConfirmation, { req }) => {
+                if (passwordConfirmation !== req.body.password) {
+                    throw new Error("Passwords must match!");
+                }
+            })
     ],
     async (req, res) => {
         //validation
         const errors = validationResult(req);
         console.log(errors); // see them in node console
 
-
         // console.log(req.body); // req.body = the names of the inputs
         const { email, password, passwordConfirmation } = req.body;
-
-        if (password !== passwordConfirmation) {
-            return res.send("passwords must match");
-        }
 
         // Create a user, in our user repo
         const user = await usersRepo.create({ email, password });
