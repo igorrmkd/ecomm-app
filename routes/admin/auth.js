@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator');
 const usersRepo = require('../../repositories/users');
 const signupTemplate = require("../../views/admin/auth/signup");
 const signinTemplate = require("../../views/admin/auth/signin");
+const { requireEmail, requirePassword, requirePasswordConfirmation } = require('./validators');
 
 //subrouter to link our route handlers to index.js
 // the router const, its an object to track all of our (app.get/post routes)
@@ -18,20 +19,9 @@ router.get('/signup', (req, res) => {
 // first run the bodyParser(middleware) - function, and then the callback
 router.post('/signup',
     [
-        check('email').trim().normalizeEmail().isEmail()
-            .custom(async (email) => {
-                const existingUser = await usersRepo.getOneBy({ email });
-                if (existingUser) {
-                    throw new Error("This email is already used!");
-                }
-            }),
-        check('password').trim().isLength({ min: 4, max: 20 }),
-        check('passwordConfirmation').trim().isLength({ min: 4, max: 20 })
-            .custom((passwordConfirmation, { req }) => {
-                if (passwordConfirmation !== req.body.password) {
-                    throw new Error("Passwords must match!");
-                }
-            })
+        requireEmail,
+        requirePassword,
+        requirePasswordConfirmation
     ],
     async (req, res) => {
         //validation
