@@ -4,7 +4,12 @@ const { check, validationResult } = require('express-validator');
 const usersRepo = require('../../repositories/users');
 const signupTemplate = require("../../views/admin/auth/signup");
 const signinTemplate = require("../../views/admin/auth/signin");
-const { requireEmail, requirePassword, requirePasswordConfirmation } = require('./validators');
+const { requireEmail,
+    requirePassword,
+    requirePasswordConfirmation,
+    requireEmailExists,
+    requireValidPasswordForUser
+} = require('./validators');
 
 //subrouter to link our route handlers to index.js
 // the router const, its an object to track all of our (app.get/post routes)
@@ -54,45 +59,23 @@ router.get("/signin", (req, res) => {
 });
 
 // compare the login data with the saved users data 
-router.post('/signin', [
-    check('email')
-        .trim()
-        .normalizeEmail()
-        .isEmail()
-        .withMessage('Must provide a valid email')
-        .custom(async (email) => {
-            const user = await usersRepo.getOneBy({ email });
-            if (!user) {
-                throw new Error("Email not found!");
-            }
-        }),
-    check('password')
-        .trim()
-        .custom(async (password, { req }) => {
-            const user = await usersRepo.getOneBy({ email: req.body.email });
-            if (!user) { // if user is undefined.. throw an error
-                throw new Error("Invalid Password!");
-            }
-            const validPassword = await usersRepo.comparePasswords(
-                user.password,
-                password
-            );
+router.post(
+    '/signin',
+    [
+        requireEmailExists,
+        requireValidPasswordForUser
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        console.log(errors);
 
-            if (!validPassword) {
-                throw new Error("Invalid Password!");
-            }
-        })
-], async (req, res) => {
-    const errors = validationResult(req);
-    console.log(errors);
+        const { email } = req.body;
 
-    const { email } = req.body;
+        const user = await usersRepo.getOneBy({ email });
 
-    const user = await usersRepo.getOneBy({ email });
-
-    req.session.userId = user.id;
-    res.send("You are signed In");
-});
+        req.session.userId = user.id;
+        res.send("You are signed In");
+    });
 
 
 module.exports = router;
