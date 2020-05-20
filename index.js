@@ -5,6 +5,9 @@ const authRouter = require('./routes/admin/auth');
 
 const app = express();
 
+// let express use whatever we put in public folder - like main.css
+app.use(express.static('public'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieSession({
     keys: ['sdfsaaffsf32d1f5h32ds54']
