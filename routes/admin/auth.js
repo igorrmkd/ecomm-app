@@ -26,7 +26,10 @@ router.post('/signup',
     async (req, res) => {
         //validation
         const errors = validationResult(req);
-        console.log(errors); // see them in node console
+
+        if (!errors.isEmpty()) {
+            return res.send(signupTemplate({ req, errors }));
+        }
 
         // console.log(req.body); // req.body = the names of the inputs
         const { email, password, passwordConfirmation } = req.body;
