@@ -55,7 +55,7 @@ router.get('/signout', (req, res) => {
 });
 
 router.get("/signin", (req, res) => {
-    res.send(signinTemplate({ req }));
+    res.send(signinTemplate({}));
 });
 
 // compare the login data with the saved users data 
@@ -67,7 +67,10 @@ router.post(
     ],
     async (req, res) => {
         const errors = validationResult(req);
-        console.log(errors);
+        // console.log(errors);
+        if (!errors.isEmpty()) {
+            return res.send(signinTemplate({ errors }));
+        }
 
         const { email } = req.body;
 
