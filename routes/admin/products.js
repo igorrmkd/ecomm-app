@@ -19,7 +19,10 @@ router.get('/admin/products/new', (req, res) => {
 // the post form
 router.post('/admin/products/new', [requireTitle, requirePrice], (req, res) => {
     const errors = validationResult(req);
-    console.log(errors);
+    // console.log(errors);
+    console.log(req.body);
+
+
 
     res.send('submited');
 })
