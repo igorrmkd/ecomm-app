@@ -20,12 +20,19 @@ router.get('/admin/products/new', (req, res) => {
 });
 
 // the post form
-router.post('/admin/products/new', [requireTitle, requirePrice], upload.single('image'), (req, res) => {
+router.post('/admin/products/new', upload.single('image'), [requireTitle, requirePrice], async (req, res) => {
     const errors = validationResult(req);
+
+    // if we have an error..
+    if (!errors.isEmpty()) {
+        return res.send(productsNewTemplate({ errors }));
+    }
     // console.log(errors);
     // console.log(req.body);
-    console.log(req.file);
-
+    const image = req.file.buffer.toString('base64');
+    const { title, price } = req.body;
+    /// save the data
+    await productsRepo.create({ title, price, image });
 
 
 
