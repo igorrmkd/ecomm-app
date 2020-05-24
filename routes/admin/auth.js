@@ -40,7 +40,8 @@ router.post('/signup',
         req.session.userId = user.id;
 
         res.redirect('/admin/products');
-    });
+    }
+);
 
 router.get('/signout', (req, res) => {
     req.session = null;
