@@ -37,7 +37,7 @@ router.post('/cart/products', async (req, res) => {
     // either increment quantity for existing product
     // or add new product to items array
 
-    res.send('Product added to cart');
+    res.redirect('/cart');
 
 });
 
